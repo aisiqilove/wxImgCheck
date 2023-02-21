@@ -4,7 +4,7 @@ var util = require('util');
 var FormData = require('form-data');
 var fs = require('fs');
 var axios = require('axios');
-var { APPID, APPSECRET } = require('../public/const/common');
+var { APPID, APPSECRET } = process.env;
 var router = express.Router();
 
 const isValid = async () => {
