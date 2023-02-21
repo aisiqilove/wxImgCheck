@@ -61,9 +61,21 @@ const wxImgCheck = async (token, file) => {
         })
     }
 
-    const headers = await getHeaders(form);
-    const res = await axios.post(url, form, { headers });
-    return res.data;
+    try {
+        const headers = await getHeaders(form);
+        const res = await axios.post(url, form, { headers });
+        if (res.data.errcode === 40001 || res.data.errcode === 40013) {
+            global.AccessToken.flag = true;
+            const newToken = await getToken();
+            await wxImgCheck(newToken, file);
+        }
+        return res.data;
+    } catch (err) {
+        return {
+            errcode: 500,
+            message: err.message
+        }
+    }
 }
 
 
